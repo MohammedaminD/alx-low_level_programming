@@ -2,7 +2,7 @@
 /**
   * main - Entry point
   *prints all single digit numbers of base 10 starting from 0
-  *no char variables allowed
+  *no char variables allowed and no printf,puts
   * Return: Always 0 (Success)
   */
 int main(void)

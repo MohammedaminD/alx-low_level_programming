@@ -9,10 +9,10 @@ int main(void)
 {
 	int m;
 
-	for (m = 0; m < 10; m++)
+	for (m = 48; m < 58; m++)
 	{
-		printf("%d", m);
+		putchar(m);
 	}
-	printf("\n");
+	putchar('\n');
 	return (0);
 }

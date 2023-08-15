@@ -7,7 +7,7 @@
 int main(void)
 {
 	int m;
-	int R;
+	int R = 1;
 
 	while (R < 11)
 	{
@@ -15,6 +15,7 @@ int main(void)
 		{
 			putchar(m);
 		}
+		R++;
 		putchar('\n');
 	}
 	return (0);

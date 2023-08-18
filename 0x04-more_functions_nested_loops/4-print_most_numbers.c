@@ -1,5 +1,4 @@
 #include "main.h"
-
 /**
   * print_most_numbers - Entry point
   *
@@ -7,7 +6,9 @@
   */
 void print_most_numbers(void)
 {
-	for (int i = 48; i < 58; i++)
+	int i;
+
+	for (i = 48; i < 58; i++)
 	{
 		if (!(i == 50 || i == 52))
 		{

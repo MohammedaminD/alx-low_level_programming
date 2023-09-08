@@ -1,36 +1,45 @@
 #include <stdlib.h>
 #include "main.h"
+
 /**
- * *string_nconcat -a function that concatenates two strings
+ * *string_nconcat - concatenates n bytes of a string to another string
+ * @s1: string to append to
+ * @s2: string to concatenate from
+ * @n: number of bytes from s2 to concatenate to s1
  *
- * @s1 : char variable pointer
- * @s2 : char variable pointer
- * @n : integer input variable
- * Return:pointer value for success or NULL for failure
+ * Return: pointer to the resulting string
  */
 char *string_nconcat(char *s1, char *s2, unsigned int n)
 {
-	int i, j, len1, len2;
-	char *ptr;
+	char *s;
+	unsigned int i = 0, j = 0, len1 = 0, len2 = 0;
 
-	if (s1 == NULL)
-		s1 = "";
-	if (s2 == NULL)
-		s2 = "";
-	for (len1 = 0; s1[len1] != '\0'; len1++)
-		;
-	for (len2 = 0; s2[len2] != '\0'; len2++)
-		;
-	ptr = (char *)malloc(sizeof(char) * len1 + n + 1);
-	if (ptr == NULL)
+	while (s1 && s1[len1])
+		len1++;
+	while (s2 && s2[len2])
+		len2++;
+
+	if (n < len2)
+		s = malloc(sizeof(char) * (len1 + n + 1));
+	else
+		s = malloc(sizeof(char) * (len1 + len2 + 1));
+
+	if (!s)
 		return (NULL);
-	for (i = 0 ; i < len1; i++)
-		ptr[i] = s1[i];
-	for (j = 0; j < n; i++, j++)
+
+	while (i < len1)
 	{
-		ptr[i] = s2[j];
+		s[i] = s1[i];
+		i++;
 	}
-	ptr[i] = '\0';
-	i++;
-	return (ptr);
+
+	while (n < len2 && i < (len1 + n))
+		s[i++] = s2[j++];
+
+	while (n >= len2 && i < (len1 + len2))
+		s[i++] = s2[j++];
+
+	s[i] = '\0';
+
+	return (s);
 }

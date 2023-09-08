@@ -6,7 +6,7 @@
  * @s1 : char variable pointer
  * @s2 : char variable pointer
  * @n : integer input variable
- * Return:pointer value for success, NULL for fail
+ * Return:pointer value for success or NULL for failure
  */
 char *string_nconcat(char *s1, char *s2, unsigned int n)
 {
@@ -31,5 +31,6 @@ char *string_nconcat(char *s1, char *s2, unsigned int n)
 		ptr[i] = s2[j];
 	}
 	ptr[i] = '\0';
+	i++;
 	return (ptr);
 }

@@ -13,7 +13,7 @@ sub rsp, 16 ; reserve space for two pointers
 
 ; load address of name string into rdi
 ; the address of text string is already hardcoded in the instruction
-mov rdi, name 
+mov rdi, name
 
 ; load address of text string into rsi
 mov rsi, text

@@ -1,56 +1,50 @@
-#include <unistd.h>
-#include <fcntl.h>
+#include "main.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-#define BUFFER_SIZE 1024
-
-int main(int argc, char** argv)
+/**
+ * main - Copies the contents of a file to another file.
+ * @argc: The number of arguments supplied to the program.
+ * @argv: An array of pointers to the arguments.
+ * Return: 0 on success.
+ */
+int main(int argc, char *argv[])
 {
+	int from, to, r, w;
+	char *buffer;
+
 	if (argc != 3)
 	{
 		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
 		exit(97);
 	}
-	int fd_from = open(argv[1], O_RDONLY);
+	buffer = create_buffer(argv[2]);
+	from = open(argv[1], O_RDONLY);
+	r = read(from, buffer, 1024);
+	to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 
-	if (fd_from == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", argv[1]);
-		exit(98);
-	}
-	int fd_to = open(argv[2], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-
-	if (fd_to == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", argv[2]);
-		exit(99);
-	}
-	char buffer[BUFFER_SIZE];
-	ssize_t bytes_read;
-
-	while ((bytes_read = read(fd_from, buffer, BUFFER_SIZE)) > 0)
-	{
-		if (write(fd_to, buffer, bytes_read) != bytes_read)
+	do {
+		if (from == -1 || r == -1)
 		{
-			perror("write");
+			dprintf(STDERR_FILENO,
+					"Error: Can't read from file %s\n", argv[1]);
+			free(buffer);
+			exit(98);
+		}
+		w = write(to, buffer, r);
+		if (to == -1 || w == -1)
+		{
+			dprintf(STDERR_FILENO,
+					"Error: Can't write to %s\n", argv[2]);
+			free(buffer);
 			exit(99);
 		}
-	}
-	if (bytes_read == -1)
-	{
-		perror("read");
-		exit(98);
-	}
-	if (close(fd_from) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_from);
-		exit(100);
-	}
-	if (close(fd_to) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fd_to);
-		exit(100);
-	}
+		r = read(from, buffer, 1024);
+		to = open(argv[2], O_WRONLY | O_APPEND);
+	} while (r > 0);
+	free(buffer);
+	close_file(from);
+	close_file(to);
+
 	return (0);
 }
